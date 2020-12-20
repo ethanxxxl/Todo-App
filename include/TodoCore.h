@@ -3,18 +3,20 @@
 
 #include <Task.h>
 #include <vector>
+#include <fstream>
 
-/* Things to consider:
- *  - what file format for tasks?
- *  - how to handle current time? for recurring/compounding tasks, and overdue tasks
- */
 
 class TodoCore
 {
 private:
+public:
+	// list of task sorted by due date
 	std::vector<Task> tasks;
 
+	void load_file();
 
+	void save_file(std::string filename);
 
 };
+
 #endif

@@ -5,12 +5,14 @@ project(TodoApp)
 set(SRC
 	src/main.cpp
 	src/TodoCore.cpp
+	src/Task.cpp
 	)
+
+set(CMAKE_CXX_FLAGS -std=c++17)
 
 include_directories(./include)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-
 set(CMAKE_BUILD_TYPE Debug)
 
 add_executable(run ${SRC})

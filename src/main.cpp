@@ -14,7 +14,26 @@
  *   
  */
 
+#include <chrono>
+#include <thread>
+#include <iostream>
+#include <TodoCore.h>
+#include <Task.h>
+#include <fstream>
+#include <json.hpp>
+
 int main()
 {
+	Task t1 = {	std::chrono::system_clock::now(), "Watch Lecture", false};
+	Task t2 = {	std::chrono::system_clock::now(), "Do homework", false};
+	Task t3 = {	std::chrono::system_clock::now(), "finish project", false};
+
+	TodoCore core;
+	core.tasks.push_back(t1);
+	core.tasks.push_back(t2);
+	core.tasks.push_back(t3);
+
+	core.save_file("test_file.txt");
+
 	return 0;
 }
