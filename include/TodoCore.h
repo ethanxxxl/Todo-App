@@ -4,6 +4,7 @@
 #include <Task.h>
 #include <vector>
 #include <fstream>
+#include <chrono>
 
 
 class TodoCore
@@ -13,8 +14,9 @@ public:
 	// list of task sorted by due date
 	std::vector<Task> tasks;
 
-	void load_file();
+	//void create_task(std::string name, std::chrono::system_clock::time_point )
 
+	void load_file(std::string filename);
 	void save_file(std::string filename);
 
 };
