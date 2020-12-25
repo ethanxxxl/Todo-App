@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.10)
 
-project(TodoApp)
+project(TodoApp CXX)
 
 set(SRC
 	src/main.cpp
@@ -8,7 +8,7 @@ set(SRC
 	src/Task.cpp
 	)
 
-set(CMAKE_CXX_FLAGS -std=c++17)
+set(CMAKE_CXX_FLAGS -std=c++20)
 
 include_directories(./include)
 
