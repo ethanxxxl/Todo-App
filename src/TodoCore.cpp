@@ -42,3 +42,16 @@ void TodoCore::load_file(std::string filename)
 
 	file.close();
 }
+
+void TodoCore::create_task(const std::string& name, const time_t& due_date)
+{
+	tasks.push_back(Task());
+	tasks.back().name = name;
+	tasks.back().due_date = due_date;
+}
+
+void TodoCore::complete_task(int tsk)
+{
+	tasks[tsk].complete_subtasks();
+	tasks[tsk].completed = true;
+}
