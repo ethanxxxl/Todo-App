@@ -20,7 +20,6 @@
 #include <TodoCore.h>
 #include <Task.h>
 #include <fstream>
-#include <Calendar.h>
 #include <iostream>
 #include <vector>
 #include <sstream>
@@ -45,6 +44,7 @@ int main()
 		std::vector<std::string> args;
 
 		std::string arg;
+		// parse/tokenize command input
 		do
 		{
 			input_stream >> arg;
@@ -83,26 +83,51 @@ int main()
 		}
 		else if ( args[0] == "ls" )
 		{
-			if ( args.size() > 2 )
+			if ( args.size() > 3 )
 			{
 				std::cout << "ls: incorrect usage";
 				continue;
 			}
 
-			std::cout << "Name" << std::setw(20) << "Due Date" << std::endl;
-			for ( Task tsk : tdc.tasks )
-			{
-				if ( args.size() == 1 ) // list incomplete tasks
-					{if ( tsk.completed ) continue;}
-				else if ( args[1] == "completed" )
-					{if ( !tsk.completed ) continue;}
+			std::cout << std::left << std::setw(10) << "Name"
+					  << std::left << std::setw(20) << "Due Date"
+					  << std::endl;
 
+			bool get_completed = true;
+			TodoCore::SortBy sort_method;
+			
+			if ( args.size() < 3 || args[2] == "incomplete" )
+				get_completed = false;
+			else
+			{
+				std::cout << "you can only display complete or incomplete tasks";
+				continue;
+			}
+			
+			if ( args.size() == 1 || args[1] == "due_date" )
+				sort_method = TodoCore::SortBy::DUE_DATE;
+			else if ( args[1] == "name" )
+				sort_method = TodoCore::SortBy::NAME;
+			else if ( args[1] == "creation_date" )
+				sort_method = TodoCore::SortBy::CREATION_DATE;
+			else
+			{
+				std::cout << "please enter a proper sorting method.\ndue_date, creation_date, and name are currently supported" << std::endl;
+				continue;
+			}
+
+			const std::vector<Task*> tasks = tdc.get_tasks(sort_method, get_completed);
+			
+			for ( Task* tsk : tasks )
+			{
 				char str_buf[512];
-				struct tm* due_date_tm = localtime(&tsk.due_date);
+				struct tm* due_date_tm = localtime(&tsk->due_date);
 
 				std::strftime(str_buf, 512, "%D @ %H%M", due_date_tm);
 
-				std::cout << tsk.name << std::setw(20) << str_buf << std::endl;
+				std::cout << std::left << std::setw(10) << tsk->name
+						  << std::left << std::setw(20) << str_buf
+						  << std::endl;
 			}
 		}
 		else if ( args[0] == "add" )
