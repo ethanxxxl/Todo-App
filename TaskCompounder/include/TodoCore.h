@@ -14,6 +14,9 @@ private:
 	// list of tasks.
 	std::vector<Task*> tasks;
 
+	std::map<std::string, std::vector<Task*>> categories;
+
+	void update_category(Task* tsk, std::string category);
 public:
 	enum class SortBy { DUE_DATE, CREATION_DATE, NAME };
 
@@ -21,7 +24,7 @@ public:
 	const std::vector<Task*> get_tasks(SortBy s, bool completed=true);
 	time_t get_next_due_date();
 
-	void create_task(const std::string& name, const time_t& due_date);
+	void create_task(const std::string& name, const time_t& due_date, const std::string category="");
 	void complete_task(int tsk);
 	void delete_task(int tsk);
 

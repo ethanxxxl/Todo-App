@@ -27,6 +27,9 @@ struct Task
 
 	friend void to_json(json& j, const Task& tsk);
 	friend void from_json(const json& j, Task& tsk);
+
+	// this is here so that more complex tasks can do more complex things upon completion
+	virtual void complete();
 };
 
 /* Your traditional annoying recurring task. When you complete it, it skips all previous
