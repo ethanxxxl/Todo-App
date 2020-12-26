@@ -16,6 +16,7 @@ void from_json(const json& j, Task& tsk);
 struct Task
 {
 	std::string name;
+	std::string category;
 	bool completed;
 	
 	std::time_t creation_date;

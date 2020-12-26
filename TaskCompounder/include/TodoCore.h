@@ -19,6 +19,7 @@ public:
 
 	// returns a constant vector of either completed, or incompleted tasks, depending on the value of completed
 	const std::vector<Task*> get_tasks(SortBy s, bool completed=true);
+	time_t get_next_due_date();
 
 	void create_task(const std::string& name, const time_t& due_date);
 	void complete_task(int tsk);
