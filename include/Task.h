@@ -5,7 +5,6 @@
 #include <string>
 #include <ios>
 #include <json.hpp>
-#include <Calendar.h>
 #include <ctime>
 
 using nlohmann::json;
@@ -43,7 +42,6 @@ struct RecurringTask : public Task
  */
 struct CompoundingTask : public Task
 {
-
 };
 
 

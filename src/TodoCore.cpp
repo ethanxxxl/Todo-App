@@ -14,7 +14,7 @@ void TodoCore::save_file(std::string filename)
 
 	for ( auto t : tasks )
 	{
-		json j = t;
+		json j = *t;
 		jfile.push_back(j);
 	}
 
@@ -36,7 +36,8 @@ void TodoCore::load_file(std::string filename)
 	// load new tasks into vector
 	for ( auto j : jfile )
 	{
-		Task t = j;
+		Task* t = new Task();
+		*t = j;
 		tasks.push_back(t);
 	}
 
@@ -45,13 +46,23 @@ void TodoCore::load_file(std::string filename)
 
 void TodoCore::create_task(const std::string& name, const time_t& due_date)
 {
-	tasks.push_back(Task());
-	tasks.back().name = name;
-	tasks.back().due_date = due_date;
+	Task* t = new Task();
+	t->name = name;
+	t->due_date = due_date;
+
+	tasks.push_back(t);
 }
 
 void TodoCore::complete_task(int tsk)
 {
-	tasks[tsk].complete_subtasks();
-	tasks[tsk].completed = true;
+	tasks[tsk]->complete_subtasks();
+	tasks[tsk]->completed = true;
+}
+
+TodoCore::~TodoCore()
+{
+	for ( auto t : tasks )
+	{
+		delete(t);
+	}
 }
