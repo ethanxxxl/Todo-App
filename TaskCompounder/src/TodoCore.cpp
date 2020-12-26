@@ -108,16 +108,36 @@ void TodoCore::create_task(const std::string& name, const time_t& due_date, cons
 	t->name = name;
 	t->due_date = due_date;
 	t->category = category;
+	t->creation_date = std::time(nullptr);
 
 	update_category(t, category);
 
 	tasks.push_back(t);
 }
 
-void TodoCore::complete_task(int tsk)
+void TodoCore::complete_task(Task* tsk)
 {
-	tasks[tsk]->complete_subtasks();
-	tasks[tsk]->completed = true;
+	tsk->complete_subtasks();
+	tsk->complete();
+}
+
+void TodoCore::delete_task(Task* tsk)
+{
+	// remove tsk from its category tracker
+	auto category_result = categories.find(tsk->category);
+	if ( category_result != categories.end() )
+	{
+		auto& category_list = category_result->second;
+		// finds and removes tsk from its category
+		category_list.erase(std::find(category_list.begin(), category_list.end(), tsk));
+	}
+	else
+	{
+		// TODO handle this unexpected condition somehow, likely just do nothing.
+	}
+	
+	// find task in tasks vector, delete and remove it.
+	tasks.erase(std::find(tasks.begin(), tasks.end(), tsk));
 }
 
 void TodoCore::update_category(Task* tsk, std::string category)
