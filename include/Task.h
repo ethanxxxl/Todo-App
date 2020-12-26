@@ -18,9 +18,7 @@ struct Task
 	std::string name;
 	bool completed;
 	
-	//YearMonthDay due_date;
-	//DayTime due_time;
-	//std::chrono::system_clock::time_point due_date;
+	std::time_t creation_date;
 	std::time_t due_date;
 
 	std::vector<Task*> subtasks;

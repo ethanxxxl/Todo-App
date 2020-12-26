@@ -8,13 +8,15 @@ void to_json(json& j, const Task& tsk)
 	j = json{
 		{"name", tsk.name},
 		{"due", tsk.due_date},
-		{"completed", tsk.completed}
+		{"created", tsk.creation_date},
+		{"complete", tsk.completed}
 	};
 }
 
 void from_json(const json& j, Task& tsk)
 {
 	j.at("name").get_to(tsk.name);
+	j.at("created").get_to(tsk.creation_date);
 	j.at("due").get_to(tsk.due_date);
 	j.at("complete").get_to(tsk.completed);
 }
