@@ -1,8 +1,10 @@
 #include <TodoCore.h>
 
+#include <atomic>
 #include <fstream>
 #include <json.hpp>
 #include <iostream>
+#include <algorithm>
 
 using nlohmann::json;
 
@@ -42,6 +44,58 @@ void TodoCore::load_file(std::string filename)
 	}
 
 	file.close();
+}
+
+const std::vector<Task*> TodoCore::get_tasks(TodoCore::SortBy s, bool completed)
+{
+	std::vector<Task*> filtered_tasks;
+	filtered_tasks.reserve(tasks.size());
+	
+	// weed out unwanted tasks
+	for ( auto t : tasks )
+	{
+		if ( t->completed == !completed )
+			continue;
+
+		filtered_tasks.push_back(t);
+	}
+
+	// sort functor
+	struct sort_tasks
+	{
+		sort_tasks(SortBy s) : sort_method(s) {}
+
+		bool operator()(Task* a, Task* b)
+		{
+			switch ( sort_method )
+			{
+			case SortBy::DUE_DATE:
+				if ( a->due_date < b->due_date )
+					return true;
+				else
+					return false;
+			case SortBy::CREATION_DATE:
+				if ( a->creation_date < b->creation_date )
+					return true;
+				else
+					return false;
+			case SortBy::NAME:
+				if ( (a->name <=> b->name) < 0 ) // a < b
+					return true;
+				else
+					return false;
+			}
+		}
+
+	private:
+		SortBy sort_method;
+	};
+
+	sort_tasks sorter(s);
+
+	std::sort(filtered_tasks.begin(), filtered_tasks.end(), sorter);
+	
+	return filtered_tasks;
 }
 
 void TodoCore::create_task(const std::string& name, const time_t& due_date)
